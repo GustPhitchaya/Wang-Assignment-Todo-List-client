@@ -6,9 +6,11 @@ class AddField extends React.Component {
     super(props);
     this.state = {
       isButton: true,
+      value: '',
     };
     this.handleClick = this.handleClick.bind(this);
-    this.handleOnBlur = this.handleOnBlur.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleClick() {
@@ -19,25 +21,35 @@ class AddField extends React.Component {
     //return this.props.onClick();
   }
 
-  handleOnBlur() {
+  handleChange(event) {
+    this.setState({
+      value: event.target.value,
+    });
+  }
+
+  handleSubmit(event) {
+    if (this.state.value !== '')
+      this.props.onAddItem(this.state.value);
+
     this.setState({
       isButton: true,
     });
+
+    event.preventDefault();
   }
 
   render() {
     if (this.state.isButton) {
       return (
         <button className='add-button' onClick={this.handleClick}>
-          add new item
+          +
         </button>
       );
     } else {
       return (
-        <>
-          <input type='text' id='new-item' name='new-item' value='enter new item' onBlur={this.handleOnBlur} autoFocus />
-          <label htmlFor='new-item'></label>
-        </>
+        <form onSubmit={this.handleSubmit}>
+          <input type='text' id='new-item' name='new-item' onChange={this.handleChange} onBlur={this.handleSubmit} autoFocus />
+        </form>
       )
     }
   }
@@ -58,14 +70,30 @@ class Item extends React.Component {
 }
 
 class List extends React.Component {
-  addNewItem() {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: [],
+      itemNumber: 0,
+    };
+  }
 
+  addNewItem(newItem) {
+    const items = this.state.items.slice();
+    const itemNumber = this.state.itemNumber;
+    this.setState({
+      items: items.concat([{
+        id: itemNumber + 1,
+        desc: newItem,
+      }]),
+      itemNumber: itemNumber + 1,
+    });
   }
 
   renderAddButton() {
     return (
       <AddField
-        onClick={() => this.addNewItem()}
+        onAddItem={newItem => this.addNewItem(newItem)}
       />
     );
   }
@@ -81,12 +109,12 @@ class List extends React.Component {
   }
 
   renderList() {
-    const items = getItems();
-    return items.map(item => {
-      return <li className='Item'>
+    const items = this.state.items.slice();
+    return items.map(item => 
+      <li key={item.id} className='Item'>
         {this.renderItem(item)}
       </li>
-    });
+    );
   }
 
   render() {
@@ -115,19 +143,19 @@ class App extends React.Component {
 }
 
 function getItems() {
-  //example
-  return [
-    {
-      id: 'i1',
-      type: 'study',
-      desc: 'homework'
-    },
-    {
-      id: 'i2',
-      type: 'work',
-      desc: 'web'
-    }
-  ];
+  // //example
+  // return [
+  //   {
+  //     id: 'i1',
+  //     type: 'study',
+  //     desc: 'homework'
+  //   },
+  //   {
+  //     id: 'i2',
+  //     type: 'work',
+  //     desc: 'web'
+  //   }
+  // ];
 }
 
 export default App;
