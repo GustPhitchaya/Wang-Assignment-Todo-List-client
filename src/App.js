@@ -1,13 +1,46 @@
 import React from 'react';
-
 import './App.css';
 
-function AddButton(props) {
-  return (
-    <button className='add-button' onClick={props.onClick}>
-      add new item
-    </button>
-  );
+class AddField extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isButton: true,
+    };
+    this.handleClick = this.handleClick.bind(this);
+    this.handleOnBlur = this.handleOnBlur.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      isButton: false,
+    });
+
+    //return this.props.onClick();
+  }
+
+  handleOnBlur() {
+    this.setState({
+      isButton: true,
+    });
+  }
+
+  render() {
+    if (this.state.isButton) {
+      return (
+        <button className='add-button' onClick={this.handleClick}>
+          add new item
+        </button>
+      );
+    } else {
+      return (
+        <>
+          <input type='text' id='new-item' name='new-item' value='enter new item' onBlur={this.handleOnBlur} autoFocus />
+          <label htmlFor='new-item'></label>
+        </>
+      )
+    }
+  }
 }
 
 class Item extends React.Component {
@@ -17,29 +50,29 @@ class Item extends React.Component {
 
     return (
       <>
-      <input type='checkbox' id={id} value={desc}/>
-      <label htmlFor={id}>{desc}</label>
+        <input type='checkbox' id={id} value={desc} />
+        <label htmlFor={id}>{desc}</label>
       </>
     );
   }
 }
 
-class List extends React.Component {  
+class List extends React.Component {
   addNewItem() {
 
   }
 
   renderAddButton() {
     return (
-      <AddButton 
-        onClick={() => this.addNewItem()} 
+      <AddField
+        onClick={() => this.addNewItem()}
       />
     );
   }
 
   renderItem(item) {
     return (
-      <Item 
+      <Item
         id={item.id}
         type={item.type}
         desc={item.desc}
