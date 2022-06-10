@@ -3,24 +3,7 @@ import AddField from './AddField';
 import Item from './Item';
 
 class List extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      itemNumber: 0,
-    };
-  }
-
   addNewItem(newItem) {
-    // const items = this.state.items.slice();
-    // const itemNumber = this.state.itemNumber;
-    // this.setState({
-    //   items: items.concat([{
-    //     id: itemNumber + 1,
-    //     desc: newItem,
-    //   }]),
-    //   itemNumber: itemNumber + 1,
-    // });
     fetch('http://localhost:9000/mongo', {
       method: 'POST',
       headers: {
@@ -28,24 +11,28 @@ class List extends React.Component {
       },
       body: JSON.stringify(newItem),
     })
-    .then(res => res.json())
-    .then(newItem => console.log('successfully added' + newItem))
-    .catch(err => console.log(err));
+      .then(res => res.text())
+      .then(newItem => console.log('successfully added ' + newItem))
+      .catch(err => console.log(err));
+
+    this.props.refresh();
+  }
+
+  deleteItem(id) {
+    const items = this.props.items.slice();
+    this.setState({
+      items: items.filter(item => item._id !== id),
+    });
   }
 
   renderAddField() {
     return (
-      <AddField
-        onAddItem={newItem => this.addNewItem(newItem)}
-      />
+      <li key="add-field-key">
+        <AddField
+          onAddItem={newItem => this.addNewItem(newItem)}
+        />
+      </li>
     );
-  }
-
-  deleteItem(id) {
-    const items = this.state.items.slice();
-    this.setState({
-      items: items.filter(item => item.id !== id),
-    });
   }
 
   renderItem(item) {
@@ -53,7 +40,9 @@ class List extends React.Component {
       <>
         <Item
           id={item._id}
-          desc={item.name}
+          desc={item.description}
+          due={item.due}
+          isDone={item.isDone}
           onClickDelete={() => this.deleteItem(item._id)}
         />
       </>
@@ -61,12 +50,14 @@ class List extends React.Component {
   }
 
   renderList() {
-    const items = this.props.items.slice();
-    return items.map(item =>
-      <li key={item.id} className='Item'>
-        {this.renderItem(item)}
-      </li>
-    );
+    if (this.props.items) {
+      const items = this.props.items.slice();
+      return items.map(item =>
+        <li key={item._id} className='Item'>
+          {this.renderItem(item)}
+        </li>
+      );
+    }
   }
 
   render() {

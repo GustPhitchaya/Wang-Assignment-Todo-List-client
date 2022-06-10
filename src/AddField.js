@@ -16,8 +16,6 @@ class AddField extends React.Component {
     this.setState({
       isButton: false,
     });
-
-    //return this.props.onClick();
   }
 
   handleChange(event) {
@@ -28,7 +26,11 @@ class AddField extends React.Component {
 
   handleSubmit(event) {
     if (this.state.value !== '')
-      this.props.onAddItem(this.state.value);
+      this.props.onAddItem({
+        'description': this.state.value,
+        'due': '01-01-1970',
+        'isDone': false,
+      });
 
     this.setState({
       isButton: true,
@@ -47,7 +49,7 @@ class AddField extends React.Component {
     } else {
       return (
         <form onSubmit={this.handleSubmit}>
-          <input type='text' id='new-item' name='new-item' onChange={this.handleChange} onBlur={this.handleSubmit} autoFocus />
+          <input type='text' id='new-item' name='new-item' onChange={this.handleChange} autoFocus />
         </form>
       )
     }
