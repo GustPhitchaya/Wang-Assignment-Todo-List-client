@@ -1,40 +1,77 @@
 import React from "react";
+import './Item.css';
+
+function Description(props) {
+  const id = props.id;
+  const desc = props.desc;
+
+  return (
+    <form className="description">
+      <input type='checkbox' id={id} value={desc} />
+      <label htmlFor={id}>{desc}</label>
+    </form>
+  )
+}
+
+function DeleteButton(props) {
+  return (
+    <button id={props.id} className="delButton" onClick={props.onClick}>
+      delete
+    </button>
+  )
+}
 
 class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mouseEnter: false,
+      mouseOver: false,
     };
 
     this.handleMouseOver = this.handleMouseOver.bind(this);
-  }
-
-  renderDeleteButton() {
-    <button>
-      delete
-    </button>
+    this.handleMouseLeave = this.handleMouseLeave.bind(this);
   }
 
   handleMouseOver() {
-    console.log('hover');
+    // console.log('hover');
     this.setState({
-      mouseEnter: true,
+      mouseOver: true,
     })
   }
 
-  render() {
-    const id = this.props.id;
-    const desc = this.props.desc;
+  handleMouseLeave() {
+    // console.log('mouse leave');
+    this.setState({
+      mouseOver: false,
+    })
+  }
 
+  renderDescription() {
     return (
-      <>
-        <form>
-          <input type='checkbox' id={id} value={desc} />
-          <label htmlFor={id} onMouseOver={this.handleMouseOver}>{desc}</label>
-        </form>
+      <Description
+        id={this.props.id}
+        desc={this.props.desc}
+      />
+    )
+  }
+
+  renderDeleteButton() {
+    if (this.state.mouseOver) {
+      return (
+        <DeleteButton
+          id={this.props.id}
+          onClick={this.props.onClickDelete}
+        />
+      )
+    }
+  }
+
+  render() {
+    return (
+      <div className="item" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
+        {this.renderDescription()}
         {this.renderDeleteButton()}
-      </>
+      </div>
     );
   }
 }

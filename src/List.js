@@ -31,10 +31,6 @@ class List extends React.Component {
     );
   }
 
-  handleMouseEnter() {
-
-  }
-
   deleteItem(id) {
     const items = this.state.items.slice();
     this.setState({
@@ -49,7 +45,6 @@ class List extends React.Component {
           id={item.id}
           type={item.type}
           desc={item.desc}
-          onMouseEnter={() => this.handleMouseEnter}
           onClickDelete={() => this.deleteItem(item.id)}
         />
       </>
