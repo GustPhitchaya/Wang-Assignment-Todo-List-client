@@ -1,6 +1,6 @@
-import React from "react";
-import AddField from "./AddField";
-import Item from "./Item";
+import React from 'react';
+import AddField from './AddField';
+import Item from './Item';
 
 class List extends React.Component {
   constructor(props) {
@@ -12,15 +12,25 @@ class List extends React.Component {
   }
 
   addNewItem(newItem) {
-    const items = this.state.items.slice();
-    const itemNumber = this.state.itemNumber;
-    this.setState({
-      items: items.concat([{
-        id: itemNumber + 1,
-        desc: newItem,
-      }]),
-      itemNumber: itemNumber + 1,
-    });
+    // const items = this.state.items.slice();
+    // const itemNumber = this.state.itemNumber;
+    // this.setState({
+    //   items: items.concat([{
+    //     id: itemNumber + 1,
+    //     desc: newItem,
+    //   }]),
+    //   itemNumber: itemNumber + 1,
+    // });
+    fetch('http://localhost:9000/mongo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newItem),
+    })
+    .then(res => res.json())
+    .then(newItem => console.log('successfully added' + newItem))
+    .catch(err => console.log(err));
   }
 
   renderAddField() {
@@ -42,17 +52,16 @@ class List extends React.Component {
     return (
       <>
         <Item
-          id={item.id}
-          type={item.type}
-          desc={item.desc}
-          onClickDelete={() => this.deleteItem(item.id)}
+          id={item._id}
+          desc={item.name}
+          onClickDelete={() => this.deleteItem(item._id)}
         />
       </>
     );
   }
 
   renderList() {
-    const items = this.state.items.slice();
+    const items = this.props.items.slice();
     return items.map(item =>
       <li key={item.id} className='Item'>
         {this.renderItem(item)}

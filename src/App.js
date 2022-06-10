@@ -1,6 +1,6 @@
-import React from "react";
-import "./App.css";
-import List from "./List.js";
+import React from 'react';
+import './App.css';
+import List from './List.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -9,9 +9,10 @@ class App extends React.Component {
   }
 
   callAPI() {
-    fetch("http://localhost:9000/mongo")
-      .then(res => res.json())
-      .then(items => this.setState({ items: items.name }));
+    fetch('http://localhost:9000/mongo')
+      .then(res => res.text())
+      .then(items => JSON.parse(items))
+      .then(items => this.setState({ items: items }));
   }
 
   UNSAFE_componentWillMount() {
@@ -20,13 +21,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App" >
-        <p>{this.state.items}</p>
-        <header className="App-header">
+      <div className='App' >
+        <header className='App-header'>
           <p>To-Do List</p>
         </header>
-        <div className="Todo-list">
-          <List />
+        <div className='Todo-list'>
+          <List 
+            items={this.state.items}
+          />
         </div>
       </div>
     );
