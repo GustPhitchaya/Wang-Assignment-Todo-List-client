@@ -2,9 +2,11 @@ import React from 'react';
 import AddField from './AddField';
 import Item from './Item';
 
+const databaseAPI = 'http://localhost:9000/mongo';
+
 class List extends React.Component {
   addNewItem(newItem) {
-    fetch('http://localhost:9000/mongo', {
+    fetch(databaseAPI, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -12,17 +14,25 @@ class List extends React.Component {
       body: JSON.stringify(newItem),
     })
       .then(res => res.text())
-      .then(newItem => console.log('successfully added ' + newItem))
+      .then(msg => alert(msg))
       .catch(err => console.log(err));
 
     this.props.refresh();
   }
 
-  deleteItem(id) {
-    const items = this.props.items.slice();
-    this.setState({
-      items: items.filter(item => item._id !== id),
-    });
+  deleteItem(item) {
+    fetch(databaseAPI, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item),
+    })
+      .then(res => res.text())
+      .then(msg => alert(msg))
+      .catch(err => console.log(err));
+
+    this.props.refresh();
   }
 
   renderAddField() {
@@ -39,11 +49,11 @@ class List extends React.Component {
     return (
       <>
         <Item
-          id={item._id}
-          desc={item.description}
+          _id={item._id}
+          description={item.description}
           due={item.due}
           isDone={item.isDone}
-          onClickDelete={() => this.deleteItem(item._id)}
+          onClickDelete={() => this.deleteItem(item)}
         />
       </>
     );

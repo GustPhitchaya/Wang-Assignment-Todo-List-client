@@ -1,21 +1,21 @@
 import React from "react";
 import './Item.css';
 
-function Description(props) {
-  const id = props.id;
-  const desc = props.desc;
+function Task(props) {
+  const _id = props._id;
+  const description = props.description;
 
   return (
     <form className="description">
-      <input type='checkbox' id={id} value={desc} />
-      <label htmlFor={id}>{desc}</label>
+      <input type='checkbox' id={_id} value={description} />
+      <label htmlFor={_id}>{description}</label>
     </form>
   )
 }
 
 function DeleteButton(props) {
   return (
-    <button id={props.id} className="delButton" onClick={props.onClick}>
+    <button id={props._id} className="delButton" onClick={props.onClick}>
       delete
     </button>
   )
@@ -48,9 +48,9 @@ class Item extends React.Component {
 
   renderDescription() {
     return (
-      <Description
-        id={this.props.id}
-        desc={this.props.desc}
+      <Task
+        _id={this.props._id}
+        description={this.props.description}
       />
     )
   }
@@ -59,7 +59,7 @@ class Item extends React.Component {
     if (this.state.mouseOver) {
       return (
         <DeleteButton
-          id={this.props.id}
+          _id={this.props._id}
           onClick={this.props.onClickDelete}
         />
       )

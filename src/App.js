@@ -31,7 +31,7 @@ class App extends React.Component {
         <div className='Todo-list'>
           <List
             items={this.state.items}
-            //refresh={() => this.fetchItems()}
+            refresh={() => this.fetchItems()}
           />
         </div>
       </div>
