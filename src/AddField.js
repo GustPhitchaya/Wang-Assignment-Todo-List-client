@@ -6,10 +6,10 @@ class AddField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isButton: true,
-      title: '',
-      description: '',
-      due: '',
+      isButton: this.props.isButton,
+      title: this.props.title,
+      description: this.props.description,
+      due: this.props.due,
     };
     this.handleClick = this.handleClick.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -53,20 +53,30 @@ class AddField extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.title !== '') {
-      console.log(this.state.due);
-      this.props.onAddItem({
-        'title': this.state.title,
-        'description': this.state.description,
-        'due': this.state.due,
-        'isDone': false,
-      });
-      console.log('created "' + this.state.title + '" due at ' + this.state.due);
-    }
-
-    this.setDefault();
-
     event.preventDefault();
+
+    if (this.state.title) {
+      if (!this.props.editing) {
+        console.log(this.state.due);
+        this.props.onSubmit({
+          'title': this.state.title,
+          'description': this.state.description,
+          'due': this.state.due,
+          'isDone': false,
+        });
+        console.log('created "' + this.state.title + '" due at ' + this.state.due);
+        this.setDefault();
+      } else {
+        this.props.onSubmit({
+          '_id': this.props._id,
+          'title': this.state.title,
+          'description': this.state.description,
+          'due': this.state.due,
+          'isDone': this.props.isDone,
+        });
+        console.log('updated the item');
+      }
+    }
   }
 
   blankspace() {
@@ -78,7 +88,7 @@ class AddField extends React.Component {
       <label className="title">
         Title:
         {this.blankspace()}
-        <input type="text" name="title" className="titleField" onChange={this.handleTitleChange} autoFocus />
+        <input type="text" name="title" className="titleField" onChange={this.handleTitleChange} defaultValue={this.state.title} autoFocus />
       </label>
     )
   }
@@ -101,7 +111,7 @@ class AddField extends React.Component {
       <label>
         Description:
         {this.blankspace()}
-        <textarea onChange={this.handleDescriptionChange} />
+        <textarea onChange={this.handleDescriptionChange} defaultValue={this.state.description} />
       </label>
     )
   }

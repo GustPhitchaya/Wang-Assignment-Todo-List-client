@@ -49,17 +49,22 @@ class List extends React.Component {
     this.props.refresh();
   }
 
-  // ---------------- renders ------------------
-  renderAddField() {
-    return (
-      <li key="add-field-key">
-        <AddField
-          onAddItem={newItem => this.addNewItem(newItem)}
-        />
-      </li>
-    );
+  async editItem(item) {
+    await fetch(databaseAPI, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item),
+    })
+      .then(res => res.text())
+      .catch(err => console.log(err));
+
+    this.props.refresh();
   }
 
+  // ---------------- renders ------------------
+  
   renderItem(item) {
     return (
       <>
@@ -71,7 +76,8 @@ class List extends React.Component {
           isDone={item.isDone}
           onClickDelete={() => this.deleteItem(item)}
           onCheck={() => this.handleCheck(item)}
-        />
+          onSubmitEdit={newItem => this.editItem(newItem)}
+          />
       </>
     );
   }
@@ -85,6 +91,18 @@ class List extends React.Component {
           </li>
         );
     }
+  }
+
+  renderAddField() {
+    return (
+      <li key="add-field-key">
+        <AddField
+          onSubmit={newItem => this.addNewItem(newItem)}
+          isButton={true}
+          editing={false}
+        />
+      </li>
+    );
   }
 
   renderCompletedList() {
