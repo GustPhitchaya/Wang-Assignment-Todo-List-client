@@ -2,16 +2,11 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-
 }
 
 .App-header {
   font-size: calc(10px + 2vmin);
-  color: rgb(0, 0, 0);
-}
-
-.App-link {
-  color: #61dafb;
+  color: #6200EE;
 }
 
 .Todo-list {
@@ -20,6 +15,28 @@
 
 .List {
   list-style-type: none;
-  margin: 0;
+  margin: 5px;
 }
 
+.button {
+  width: fit-content;
+  border-color: #3700B3;
+  background-color: white;
+  color: #018786;
+}
+
+.bodyDarkMode {
+  background-color: #121212;
+  color: #BB86FC;
+}
+
+.buttonDarkMode {
+  width: fit-content;
+  border-color: #3700B3;
+  background-color: #121212;
+  color: #03DAC6;
+}
+
+.AppHeaderDarkMode {
+  color: #BB86FC;
+}

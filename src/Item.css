@@ -5,7 +5,19 @@
 .button {
   margin-left: 5px;
   width: fit-content;
+  border-color: #3700B3;
+  background-color: white;
+  color: #018786;
 }
+
+.buttonDarkMode {
+  margin-left: 5px;
+  width: fit-content;
+  border-color: #3700B3;
+  background-color: #121212;
+  color: #03DAC6;
+}
+
 
 .dueDate {
   opacity: 0.5;

@@ -10,7 +10,17 @@ class App extends React.Component {
     this.state = {
       uncompletedItems: null,
       completedItems: null,
+      darkMode: false,
     };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  handleClick() {
+    this.setState({
+      darkMode: !this.state.darkMode,
+    })
+    document.body.classList.toggle('bodyDarkMode');
   }
 
   fetchItems() {
@@ -27,22 +37,25 @@ class App extends React.Component {
       .catch(err => console.log(err));
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.fetchItems();
   }
 
   render() {
     //console.log(this.state.items.length);
-
     return (
       <div className='App' >
         <header className='App-header'>
           <p>To-Do List</p>
+          <button onClick={this.handleClick} className={this.state.darkMode ? "buttonDarkMode" : "button"}>
+            {this.state.darkMode ? 'light mode' : 'dark mode'}
+          </button>
         </header>
         <div className='Todo-list'>
           <List
             uncompletedItems={this.state.uncompletedItems}
             completedItems={this.state.completedItems}
+            darkMode={this.state.darkMode}
             refresh={() => this.fetchItems()}
           />
         </div>

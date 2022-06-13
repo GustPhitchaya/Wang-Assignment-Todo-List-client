@@ -65,7 +65,6 @@ class AddField extends React.Component {
           'isDone': false,
         });
         console.log('created "' + this.state.title + '" due at ' + this.state.due);
-        this.setDefault();
       } else {
         this.props.onSubmit({
           '_id': this.props._id,
@@ -77,6 +76,7 @@ class AddField extends React.Component {
         console.log('updated the item');
       }
     }
+    this.setDefault();
   }
 
   blankspace() {
@@ -119,7 +119,7 @@ class AddField extends React.Component {
   render() {
     if (this.state.isButton) {
       return (
-        <button className='add-button' onClick={this.handleClick}>
+        <button className={this.props.darkMode ? "buttonDarkMode" : "button"} onClick={this.handleClick}>
           +
         </button>
       );
@@ -129,7 +129,7 @@ class AddField extends React.Component {
           {this.renderTitleForm()}
           {this.renderDatePicker()}
           {this.renderDescriptionForm()}
-          <input type="submit" value="Submit" className="submitButton" />
+          <input type="submit" value="Submit" className="button" />
         </form>
       )
     }

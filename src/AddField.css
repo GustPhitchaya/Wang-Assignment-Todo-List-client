@@ -2,14 +2,23 @@
   padding: 5px;
   width: fit-content;
   min-height: 130px;
-  border: 2px inset rgb(0, 179, 255);
+  border: 2px inset #3700B3;
   border-radius: 2px;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
 }
 
-.submitButton {
+.button {
   width: fit-content;
+  border-color: #3700B3;
+  background-color: white;
+  color: #018786;
 }
 
+.buttonDarkMode {
+  width: fit-content;
+  border-color: #3700B3;
+  background-color: #121212;
+  color: #03DAC6;
+}

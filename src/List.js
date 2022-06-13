@@ -72,11 +72,12 @@ class List extends React.Component {
           _id={item._id}
           title={item.title}
           description={item.description}
-          due={(new Date(item.due)).toDateString()}
+          due={item.due}
           isDone={item.isDone}
           onClickDelete={() => this.deleteItem(item)}
           onCheck={() => this.handleCheck(item)}
           onSubmitEdit={newItem => this.editItem(newItem)}
+          darkMode={this.props.darkMode}
           />
       </>
     );
@@ -100,6 +101,7 @@ class List extends React.Component {
           onSubmit={newItem => this.addNewItem(newItem)}
           isButton={true}
           editing={false}
+          darkMode={this.props.darkMode}
         />
       </li>
     );

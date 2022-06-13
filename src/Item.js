@@ -85,13 +85,13 @@ class Item extends React.Component {
   }
 
   renderDue() {
-    return <span className="dueDate"> Due: {this.props.due}</span>
+    return <span className="dueDate"> Due: {new Date(this.props.due).toDateString()}</span>
   }
 
   renderEditButton() {
     if (this.state.mouseOver) {
       return (
-        <button className="button" onClick={this.handleEditClick}>
+        <button className={this.props.darkMode ? "buttonDarkMode" : "button"} onClick={this.handleEditClick}>
           edit
         </button>
       )
@@ -101,7 +101,7 @@ class Item extends React.Component {
   renderDeleteButton() {
     if (this.state.mouseOver) {
       return (
-        <button className="button" onClick={this.props.onClickDelete}>
+        <button className={this.props.darkMode ? "buttonDarkMode" : "button"} onClick={this.props.onClickDelete}>
           delete
         </button>
       )
@@ -123,7 +123,7 @@ class Item extends React.Component {
           _id={this.props._id}
           title={this.props.title}
           description={this.props.description}
-          due={this.props.due}
+          due={new Date(this.props.due)}
           isDone={this.props.isDone}
           editing={true}
         />
