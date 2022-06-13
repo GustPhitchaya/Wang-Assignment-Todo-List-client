@@ -3,14 +3,14 @@ import './Item.css';
 
 function Task(props) {
   const _id = props._id;
-  const description = props.description;
+  const title = props.title;
   const onChange = props.onChange;
   const checked = props.checked;
 
   return (
     <>
-      <input type="checkbox" id={_id} checked={checked} value={description} onChange={onChange} />
-      <label htmlFor={_id}>{description}</label>
+      <input type="checkbox" id={_id} checked={checked} value={title} onChange={onChange} />
+      <label htmlFor={_id}>{title}</label>
     </>
   )
 }
@@ -48,11 +48,11 @@ class Item extends React.Component {
     })
   }
 
-  renderDescription() {
+  renderTitle() {
     return (
       <Task
         _id={this.props._id}
-        description={this.props.description}
+        title={this.props.title}
         checked={this.props.isDone}
         onChange={() => this.props.onCheck()}
       />
@@ -73,7 +73,7 @@ class Item extends React.Component {
   render() {
     return (
       <div className="item" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
-        {this.renderDescription()}
+        {this.renderTitle()}
         {this.renderDeleteButton()}
       </div>
     );

@@ -5,6 +5,7 @@ import Item from './Item';
 const databaseAPI = 'http://localhost:9000/mongo';
 
 class List extends React.Component {
+  // ---------------- api ------------------
   async addNewItem(newItem) {
     await fetch(databaseAPI, {
       method: 'POST',
@@ -48,6 +49,7 @@ class List extends React.Component {
     this.props.refresh();
   }
 
+  // ---------------- renders ------------------
   renderAddField() {
     return (
       <li key="add-field-key">
@@ -63,6 +65,7 @@ class List extends React.Component {
       <>
         <Item
           _id={item._id}
+          title={item.title}
           description={item.description}
           due={item.due}
           isDone={item.isDone}
@@ -74,13 +77,24 @@ class List extends React.Component {
   }
 
   renderList() {
-    if (this.props.items) {
-      const items = this.props.items.slice();
+    if (this.props.uncompletedItems) {
+      const items = this.props.uncompletedItems.slice();
       return items.map(item =>
-        <li key={item._id} className='Item'>
-          {this.renderItem(item)}
-        </li>
-      );
+          <li key={item._id} className="uncompletedItem">
+            {this.renderItem(item)}
+          </li>
+        );
+    }
+  }
+
+  renderCompletedList() {
+    if (this.props.completedItems) {
+      const items = this.props.completedItems.slice();
+      return items.map(item => 
+          <li key={item._id} className="completedItem">
+            {this.renderItem(item)}
+          </li>
+        );
     }
   }
 
@@ -89,6 +103,7 @@ class List extends React.Component {
       <ul className='List'>
         {this.renderList()}
         {this.renderAddField()}
+        {this.renderCompletedList()}
       </ul>
     )
   }

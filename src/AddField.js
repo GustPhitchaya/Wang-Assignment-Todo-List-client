@@ -6,11 +6,11 @@ class AddField extends React.Component {
     super(props);
     this.state = {
       isButton: true,
-      description: '',
+      title: '',
       date: new Date(),
     };
     this.handleClick = this.handleClick.bind(this);
-    this.handleDescChange = this.handleDescChange.bind(this);
+    this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -21,9 +21,9 @@ class AddField extends React.Component {
     });
   }
 
-  handleDescChange(event) {
+  handleTitleChange(event) {
     this.setState({
-      description: event.target.value,
+      title: event.target.value,
     });
   }
 
@@ -34,18 +34,18 @@ class AddField extends React.Component {
   }
 
   handleSubmit(event) {
-    if (this.state.description !== '')
+    if (this.state.title !== '') {
       this.props.onAddItem({
-        'description': this.state.description,
+        'title': this.state.title,
         'due': this.state.date,
         'isDone': false,
       });
+      console.log('created "' + this.state.title + '" at ' + this.state.date);
+    }
 
     this.setState({
       isButton: true,
     });
-
-    console.log('created "' + this.state.description + '" at ' + this.state.date);
 
     event.preventDefault();
   }
@@ -60,7 +60,7 @@ class AddField extends React.Component {
     } else {
       return (
         <form onSubmit={this.handleSubmit}>
-          <input type='text' id='new-item' name='new-item' onChange={this.handleDescChange} autoFocus />
+          <input type='text' id='new-item' name='new-item' onChange={this.handleTitleChange} autoFocus />
           {/* <DatePicker onChange={this.handleDateChange} value={new Date()} /> */}
         </form>
       )
