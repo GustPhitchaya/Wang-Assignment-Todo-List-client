@@ -5,8 +5,8 @@ import Item from './Item';
 const databaseAPI = 'http://localhost:9000/mongo';
 
 class List extends React.Component {
-  addNewItem(newItem) {
-    fetch(databaseAPI, {
+  async addNewItem(newItem) {
+    await fetch(databaseAPI, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -14,14 +14,13 @@ class List extends React.Component {
       body: JSON.stringify(newItem),
     })
       .then(res => res.text())
-      .then(msg => alert(msg))
       .catch(err => console.log(err));
 
     this.props.refresh();
   }
 
-  deleteItem(item) {
-    fetch(databaseAPI, {
+  async deleteItem(item) {
+    await fetch(databaseAPI, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +28,21 @@ class List extends React.Component {
       body: JSON.stringify(item),
     })
       .then(res => res.text())
-      .then(msg => alert(msg))
+      .catch(err => console.log(err));
+
+    this.props.refresh();
+  }
+
+  async handleCheck(item) {
+    item.isDone = !item.isDone;
+    await fetch(databaseAPI, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(item),
+    })
+      .then(res => res.text())
       .catch(err => console.log(err));
 
     this.props.refresh();
@@ -54,6 +67,7 @@ class List extends React.Component {
           due={item.due}
           isDone={item.isDone}
           onClickDelete={() => this.deleteItem(item)}
+          onCheck={() => this.handleCheck(item)}
         />
       </>
     );

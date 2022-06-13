@@ -4,12 +4,14 @@ import './Item.css';
 function Task(props) {
   const _id = props._id;
   const description = props.description;
+  const onChange = props.onChange;
+  const checked = props.checked;
 
   return (
-    <form className="description">
-      <input type='checkbox' id={_id} value={description} />
+    <>
+      <input type="checkbox" id={_id} checked={checked} value={description} onChange={onChange} />
       <label htmlFor={_id}>{description}</label>
-    </form>
+    </>
   )
 }
 
@@ -51,6 +53,8 @@ class Item extends React.Component {
       <Task
         _id={this.props._id}
         description={this.props.description}
+        checked={this.props.isDone}
+        onChange={() => this.props.onCheck()}
       />
     )
   }
