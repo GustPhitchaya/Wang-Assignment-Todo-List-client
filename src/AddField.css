@@ -1,5 +1,15 @@
 .new-task-form {
+  padding: 5px;
+  width: fit-content;
+  min-height: 130px;
+  border: 2px inset rgb(0, 179, 255);
+  border-radius: 2px;
   display: flex;
   justify-content: space-between;
-  direction: column;
+  flex-direction: column;
 }
+
+.submitButton {
+  width: fit-content;
+}
+

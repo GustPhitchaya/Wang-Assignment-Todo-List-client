@@ -1,4 +1,12 @@
 .item {
-  display: flex;
+  margin: 5px;
 }
 
+.deleteButton {
+  margin-left: 5px;
+  width: fit-content;
+}
+
+.dueDate {
+  opacity: 0.5;
+}

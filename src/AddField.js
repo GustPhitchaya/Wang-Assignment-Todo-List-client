@@ -18,6 +18,15 @@ class AddField extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  setDefault() {
+    this.setState({
+      isButton: true,
+      title: '',
+      description: '',
+      due: new Date(),
+    });
+  }
+
   handleClick() {
     this.setState({
       isButton: false,
@@ -55,10 +64,7 @@ class AddField extends React.Component {
       console.log('created "' + this.state.title + '" due at ' + this.state.due);
     }
 
-    this.setState({
-      isButton: true,
-      'due': new Date(),
-    });
+    this.setDefault();
 
     event.preventDefault();
   }
@@ -69,10 +75,10 @@ class AddField extends React.Component {
 
   renderTitleForm() {
     return (
-      <label>
+      <label className="title">
         Title:
         {this.blankspace()}
-        <input type="text" name="title" onChange={this.handleTitleChange} autoFocus />
+        <input type="text" name="title" className="titleField" onChange={this.handleTitleChange} autoFocus />
       </label>
     )
   }
@@ -113,7 +119,7 @@ class AddField extends React.Component {
           {this.renderTitleForm()}
           {this.renderDatePicker()}
           {this.renderDescriptionForm()}
-          <input type="submit" value="Submit" />
+          <input type="submit" value="Submit" className="submitButton" />
         </form>
       )
     }
