@@ -4,14 +4,15 @@ import './Item.css';
 function Task(props) {
   const _id = props._id;
   const title = props.title;
+  const due = props.due;
   const onChange = props.onChange;
   const checked = props.checked;
 
   return (
-    <>
+    <label htmlFor={_id}>
       <input type="checkbox" id={_id} checked={checked} value={title} onChange={onChange} />
-      <label htmlFor={_id}>{title}</label>
-    </>
+      {title + ' due: ' + due}
+    </label>
   )
 }
 
@@ -53,6 +54,7 @@ class Item extends React.Component {
       <Task
         _id={this.props._id}
         title={this.props.title}
+        due={this.props.due}
         checked={this.props.isDone}
         onChange={() => this.props.onCheck()}
       />

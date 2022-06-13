@@ -67,7 +67,7 @@ class List extends React.Component {
           _id={item._id}
           title={item.title}
           description={item.description}
-          due={item.due}
+          due={(new Date(item.due)).toDateString()}
           isDone={item.isDone}
           onClickDelete={() => this.deleteItem(item)}
           onCheck={() => this.handleCheck(item)}
