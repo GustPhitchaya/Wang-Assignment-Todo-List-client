@@ -1,135 +1,97 @@
-import React from "react";
+import React, { useState } from "react";
 import './Item.css';
 import AddField from "./AddField";
 
-function Task(props) {
-  const _id = props._id;
-  const title = props.title;
-  const onChange = props.onChange;
-  const checked = props.checked;
-
-  return (
-    <label htmlFor={_id}>
-      <input type="checkbox" id={_id} checked={checked} value={title} onChange={onChange} />
-      {title}
-    </label>
-  )
-}
-
-class Item extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mouseOver: false,
-      editing: false,
-    };
-
-    this.handleMouseOver = this.handleMouseOver.bind(this);
-    this.handleMouseLeave = this.handleMouseLeave.bind(this);
-    this.handleEditClick = this.handleEditClick.bind(this);
-    this.handleEditSubmit = this.handleEditSubmit.bind(this);
-  }
+function Item(props) {
+  const [mouseOver, setMouseOver] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   // -------- handle ---------
-  handleMouseOver() {
-    // console.log('hover');
-    this.setState({
-      mouseOver: true,
-    })
+  function handleMouseOver() {
+    setMouseOver(true);
   }
 
-  handleMouseLeave() {
-    // console.log('mouse leave');
-    this.setState({
-      mouseOver: false,
-    })
+  function handleMouseLeave() {
+    setMouseOver(false);
   }
 
-  handleEditClick() {
-    this.setState({
-      editing: true,
-    })
+  function handleEditClick() {
+    setEditing(true);
   }
 
-  handleEditSubmit(updatedItem) {
-    this.props.onSubmitEdit(updatedItem);
-
-    this.setState({
-      mouseOver: false,
-      editing: false,
-    })
+  function handleEditSubmit(updatedItem) {
+    props.onSubmitEdit(updatedItem);
+    setMouseOver(false);
+    setEditing(false);
   }
 
   // ------- render --------
-  renderTask() {
+  function renderTask() {
     return (
       <div>
-        <Task
-          _id={this.props._id}
-          title={this.props.title}
-          due={this.props.due}
-          checked={this.props.isDone}
-          onChange={() => this.props.onCheck()}
-        />
-        {this.renderDue()}
-        {this.renderEditButton()}
-        {this.renderDeleteButton()}
+        <label htmlFor={props._id}>
+          <input type="checkbox" id={props._id} checked={props.isDone} value={props.title} onChange={props.onCheck} />
+          {props.title}
+        </label>
+        {renderDue()}
+        {renderEditButton()}
+        {renderDeleteButton()}
       </div>
     )
   }
 
-  renderDescription() {
-    if (this.state.mouseOver) {
-      return <div>Description: {this.props.description}</div>
+  function renderDescription() {
+    if (mouseOver) {
+      return <div>Description: {props.description}</div>
     }
   }
 
-  renderDue() {
-    return <span className="dueDate"> Due: {new Date(this.props.due).toDateString()}</span>
+  function renderDue() {
+    return <span className="dueDate"> Due: {new Date(props.due).toDateString()}</span>
   }
 
-  renderEditButton() {
-    if (this.state.mouseOver) {
+  function renderEditButton() {
+    if (mouseOver) {
       return (
-        <button className={this.props.darkMode ? "buttonDarkMode" : "button"} onClick={this.handleEditClick}>
+        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleEditClick}>
           edit
         </button>
       )
     }
   }
 
-  renderDeleteButton() {
-    if (this.state.mouseOver) {
+  function renderDeleteButton() {
+    if (mouseOver) {
       return (
-        <button className={this.props.darkMode ? "buttonDarkMode" : "button"} onClick={this.props.onClickDelete}>
+        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={props.onClickDelete}>
           delete
         </button>
       )
     }
   }
-  render() {
-    if (!this.state.editing) {
-      return (
-        <div className="item" onMouseOver={this.handleMouseOver} onMouseLeave={this.handleMouseLeave}>
-          {this.renderTask()}
-          {this.renderDescription()}
-        </div>
-      );
-    } else {
-      return (
-        <AddField
-          onSubmit={updatedItem => this.handleEditSubmit(updatedItem)}
-          isButton={false}
-          _id={this.props._id}
-          title={this.props.title}
-          description={this.props.description}
-          due={new Date(this.props.due)}
-          isDone={this.props.isDone}
-          editing={true}
-        />
-      )
-    }
+
+  if (!editing) {
+    return (
+      <div className="item" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+        {renderTask()}
+        {renderDescription()}
+      </div>
+    );
+  } else {
+    return (
+      <AddField
+        onSubmit={updatedItem => handleEditSubmit(updatedItem)}
+        isButton={false}
+        _id={props._id}
+        title={props.title}
+        description={props.description}
+        due={new Date(props.due)}
+        isDone={props.isDone}
+        editing={true}
+      />
+    )
   }
+
 }
 
 export default Item;

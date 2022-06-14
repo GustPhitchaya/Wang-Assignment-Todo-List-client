@@ -1,67 +1,56 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import List from './List.js';
 
 const databaseAPI = 'http://localhost:9000/mongo';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      uncompletedItems: null,
-      completedItems: null,
-      darkMode: false,
-    };
+function App() {
+  const [uncompletedItems, setUncompletedItems] = useState(null);
+  const [completedItems, setCompletedItems] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
+  const [dummy, setDummy] = useState(false);
 
-    this.handleClick = this.handleClick.bind(this);
-  }
-
-  handleClick() {
-    this.setState({
-      darkMode: !this.state.darkMode,
-    })
+  function handleClick() {
+    setDarkMode(!darkMode);
     document.body.classList.toggle('bodyDarkMode');
   }
 
-  fetchItems() {
+  function fetchItems() {
     fetch(databaseAPI + '/uncompleted')
       .then(res => res.text())
       .then(items => JSON.parse(items))
-      .then(items => this.setState({ uncompletedItems: items }))
+      .then(items => setUncompletedItems(items))
       .catch(err => console.log(err));
 
     fetch(databaseAPI + '/completed')
       .then(res => res.text())
       .then(items => JSON.parse(items))
-      .then(items => this.setState({ completedItems: items }))
+      .then(items => setCompletedItems(items))
       .catch(err => console.log(err));
   }
 
-  componentDidMount() {
-    this.fetchItems();
-  }
+  useEffect(() => {
+    fetchItems();
+  }, [dummy]);
 
-  render() {
-    //console.log(this.state.items.length);
-    return (
-      <div className='App' >
-        <header className='App-header'>
-          <p>To-Do List</p>
-          <button onClick={this.handleClick} className={this.state.darkMode ? "buttonDarkMode" : "button"}>
-            {this.state.darkMode ? 'light mode' : 'dark mode'}
-          </button>
-        </header>
-        <div className='Todo-list'>
-          <List
-            uncompletedItems={this.state.uncompletedItems}
-            completedItems={this.state.completedItems}
-            darkMode={this.state.darkMode}
-            refresh={() => this.fetchItems()}
-          />
-        </div>
+  return (
+    <div className='App' >
+      <header className='App-header'>
+        <p>To-Do List</p>
+        <button onClick={handleClick} className={darkMode ? "buttonDarkMode" : "button"}>
+          {darkMode ? 'light mode' : 'dark mode'}
+        </button>
+      </header>
+      <div className='Todo-list'>
+        <List
+          uncompletedItems={uncompletedItems}
+          completedItems={completedItems}
+          darkMode={darkMode}
+          refresh={() => setDummy(!dummy)}
+        />
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;

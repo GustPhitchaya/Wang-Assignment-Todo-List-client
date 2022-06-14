@@ -4,9 +4,9 @@ import Item from './Item';
 
 const databaseAPI = 'http://localhost:9000/mongo';
 
-class List extends React.Component {
+function List(props) {
   // ---------------- api ------------------
-  async addNewItem(newItem) {
+  async function addNewItem(newItem) {
     await fetch(databaseAPI, {
       method: 'POST',
       headers: {
@@ -17,10 +17,10 @@ class List extends React.Component {
       .then(res => res.text())
       .catch(err => console.log(err));
 
-    this.props.refresh();
+    props.refresh();
   }
 
-  async deleteItem(item) {
+  async function deleteItem(item) {
     await fetch(databaseAPI, {
       method: 'DELETE',
       headers: {
@@ -31,10 +31,10 @@ class List extends React.Component {
       .then(res => res.text())
       .catch(err => console.log(err));
 
-    this.props.refresh();
+    props.refresh();
   }
 
-  async handleCheck(item) {
+  async function handleCheck(item) {
     item.isDone = !item.isDone;
     await fetch(databaseAPI, {
       method: 'PUT',
@@ -46,10 +46,10 @@ class List extends React.Component {
       .then(res => res.text())
       .catch(err => console.log(err));
 
-    this.props.refresh();
+    props.refresh();
   }
 
-  async editItem(item) {
+  async function editItem(item) {
     await fetch(databaseAPI, {
       method: 'PUT',
       headers: {
@@ -60,12 +60,12 @@ class List extends React.Component {
       .then(res => res.text())
       .catch(err => console.log(err));
 
-    this.props.refresh();
+    props.refresh();
   }
 
   // ---------------- renders ------------------
-  
-  renderItem(item) {
+
+  function renderItem(item) {
     return (
       <>
         <Item
@@ -74,59 +74,58 @@ class List extends React.Component {
           description={item.description}
           due={item.due}
           isDone={item.isDone}
-          onClickDelete={() => this.deleteItem(item)}
-          onCheck={() => this.handleCheck(item)}
-          onSubmitEdit={newItem => this.editItem(newItem)}
-          darkMode={this.props.darkMode}
-          />
+          onClickDelete={() => deleteItem(item)}
+          onCheck={() => handleCheck(item)}
+          onSubmitEdit={newItem => editItem(newItem)}
+          darkMode={props.darkMode}
+        />
       </>
     );
   }
 
-  renderList() {
-    if (this.props.uncompletedItems) {
-      const items = this.props.uncompletedItems.slice();
+  function renderList() {
+    if (props.uncompletedItems) {
+      const items = props.uncompletedItems.slice();
       return items.map(item =>
-          <li key={item._id} className="uncompletedItem">
-            {this.renderItem(item)}
-          </li>
-        );
+        <li key={item._id} className="uncompletedItem">
+          {renderItem(item)}
+        </li>
+      );
     }
   }
 
-  renderAddField() {
+  function renderAddField() {
     return (
       <li key="add-field-key">
         <AddField
-          onSubmit={newItem => this.addNewItem(newItem)}
+          onSubmit={newItem => addNewItem(newItem)}
           isButton={true}
           editing={false}
-          darkMode={this.props.darkMode}
+          darkMode={props.darkMode}
         />
       </li>
     );
   }
 
-  renderCompletedList() {
-    if (this.props.completedItems) {
-      const items = this.props.completedItems.slice();
-      return items.map(item => 
-          <li key={item._id} className="completedItem">
-            {this.renderItem(item)}
-          </li>
-        );
+  function renderCompletedList() {
+    if (props.completedItems) {
+      const items = props.completedItems.slice();
+      return items.map(item =>
+        <li key={item._id} className="completedItem">
+          {renderItem(item)}
+        </li>
+      );
     }
   }
 
-  render() {
-    return (
-      <ul className='List'>
-        {this.renderList()}
-        {this.renderAddField()}
-        {this.renderCompletedList()}
-      </ul>
-    )
-  }
+  return (
+    <ul className='List'>
+      {renderList()}
+      {renderAddField()}
+      {renderCompletedList()}
+    </ul>
+  )
 }
+
 
 export default List;

@@ -1,138 +1,115 @@
-import React from 'react';
+import React, { useState } from 'react';
 import DatePicker from 'react-date-picker';
 import './AddField.css';
 
-class AddField extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isButton: this.props.isButton,
-      title: this.props.title,
-      description: this.props.description,
-      due: this.props.due,
-    };
-    this.handleClick = this.handleClick.bind(this);
-    this.handleTitleChange = this.handleTitleChange.bind(this);
-    this.handleDescriptionChange = this.handleDescriptionChange.bind(this);
-    this.handleDueChange = this.handleDueChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+function AddField(props) {
+  const [isButton, setIsButton] = useState(props.isButton);
+  const [title, setTitle] = useState(props.title);
+  const [description, setDescription] = useState(props.description);
+  const [due, setDue] = useState(props.due);
+
+  function setDefault() {
+    setIsButton(true);
+    setTitle('');
+    setDescription('');
+    setDue(new Date());
   }
 
-  setDefault() {
-    this.setState({
-      isButton: true,
-      title: '',
-      description: '',
-      due: new Date(),
-    });
+  function handleClick() {
+    setIsButton(false);
   }
 
-  handleClick() {
-    this.setState({
-      isButton: false,
-    });
+  function handleTitleChange(event) {
+    setTitle(event.target.value);
   }
 
-  handleTitleChange(event) {
-    this.setState({
-      title: event.target.value,
-    });
+  function handleDescriptionChange(event) {
+    setDescription(event.target.value);
   }
 
-  handleDescriptionChange(event) {
-    this.setState({
-      description: event.target.value,
-    });
+  function handleDueChange(newValue) {
+    setDue(newValue);
   }
 
-  handleDueChange(newValue) {
-    this.setState({
-      due: newValue,
-    });
-    console.log(this.state.due);
-  }
-
-  handleSubmit(event) {
+  function handleSubmit(event) {
     event.preventDefault();
 
-    if (this.state.title) {
-      if (!this.props.editing) {
-        console.log(this.state.due);
-        this.props.onSubmit({
-          'title': this.state.title,
-          'description': this.state.description,
-          'due': this.state.due,
+    if (title) {
+      if (!props.editing) {
+        console.log(due);
+        props.onSubmit({
+          'title': title,
+          'description': description,
+          'due': due,
           'isDone': false,
         });
-        console.log('created "' + this.state.title + '" due at ' + this.state.due);
+        console.log('created "' + title + '" due at ' + due);
       } else {
-        this.props.onSubmit({
-          '_id': this.props._id,
-          'title': this.state.title,
-          'description': this.state.description,
-          'due': this.state.due,
-          'isDone': this.props.isDone,
+        props.onSubmit({
+          '_id': props._id,
+          'title': title,
+          'description': description,
+          'due': due,
+          'isDone': props.isDone,
         });
         console.log('updated the item');
       }
     }
-    this.setDefault();
+    setDefault();
   }
 
-  blankspace() {
+  function blankspace() {
     return <span>&nbsp;&nbsp;</span>;
   }
 
-  renderTitleForm() {
+  function renderTitleForm() {
     return (
       <label className="title">
         Title:
-        {this.blankspace()}
-        <input type="text" name="title" className="titleField" onChange={this.handleTitleChange} defaultValue={this.state.title} autoFocus />
+        {blankspace()}
+        <input type="text" name="title" className="titleField" onChange={handleTitleChange} defaultValue={title} autoFocus />
       </label>
     )
   }
 
-  renderDatePicker() {
+  function renderDatePicker() {
     return (
       <label>
         Due date:
-        {this.blankspace()}
+        {blankspace()}
         <DatePicker
-          onChange={this.handleDueChange}
-          value={this.state.due}
+          onChange={handleDueChange}
+          value={due}
         />
       </label>
     )
   }
 
-  renderDescriptionForm() {
+  function renderDescriptionForm() {
     return (
       <label>
         Description:
-        {this.blankspace()}
-        <textarea onChange={this.handleDescriptionChange} defaultValue={this.state.description} />
+        {blankspace()}
+        <textarea onChange={handleDescriptionChange} defaultValue={description} />
       </label>
     )
   }
 
-  render() {
-    if (this.state.isButton) {
-      return (
-        <button className={this.props.darkMode ? "buttonDarkMode" : "button"} onClick={this.handleClick}>
-          +
-        </button>
-      );
-    } else {
-      return (
-        <form className="new-task-form" onSubmit={this.handleSubmit}>
-          {this.renderTitleForm()}
-          {this.renderDatePicker()}
-          {this.renderDescriptionForm()}
-          <input type="submit" value="Submit" className="button" />
-        </form>
-      )
-    }
+  if (isButton) {
+    return (
+      <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleClick}>
+        +
+      </button>
+    );
+  } else {
+    return (
+      <form className="new-task-form" onSubmit={handleSubmit}>
+        {renderTitleForm()}
+        {renderDatePicker()}
+        {renderDescriptionForm()}
+        <input type="submit" value="Submit" className={props.darkMode ? "buttonDarkMode" : "button"} />
+      </form>
+    )
   }
 }
 
