@@ -4,6 +4,22 @@
   flex-direction: column;
 }
 
+/* .App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  color: var(--text-primary);
+  background-color: var(--background);
+  transition: all .5s;
+}
+
+button {
+  color: var(--text-primary);
+  background-color: var(--background);
+  border: 2px var(--text-primary) solid;
+  transition: all .5s;
+} */
+
 .App-header {
   font-size: calc(10px + 2vmin);
   color: #6200EE;

@@ -34,9 +34,17 @@ function AddField(props) {
   function handleSubmit(event) {
     event.preventDefault();
 
-    if (title) {
+    if (!title) {
+      if (description) {
+        alert('please fill a title');
+      } else {
+        setDefault();
+      }
+    } else {
+      if (!description) {
+        setDescription('no description');
+      }
       if (!props.editing) {
-        console.log(due);
         props.onSubmit({
           'title': title,
           'description': description,
@@ -54,8 +62,8 @@ function AddField(props) {
         });
         console.log('updated the item');
       }
+      setDefault();
     }
-    setDefault();
   }
 
   function blankspace() {
@@ -98,7 +106,7 @@ function AddField(props) {
   if (isButton) {
     return (
       <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleClick}>
-        +
+        Add
       </button>
     );
   } else {

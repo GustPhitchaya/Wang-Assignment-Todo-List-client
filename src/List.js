@@ -1,6 +1,7 @@
 import React from 'react';
 import AddField from './AddField';
 import Item from './Item';
+import './List.css';
 
 const databaseAPI = 'http://localhost:9000/mongo';
 
@@ -67,7 +68,6 @@ function List(props) {
 
   function renderItem(item) {
     return (
-      <>
         <Item
           _id={item._id}
           title={item.title}
@@ -79,51 +79,49 @@ function List(props) {
           onSubmitEdit={newItem => editItem(newItem)}
           darkMode={props.darkMode}
         />
-      </>
     );
   }
 
-  function renderList() {
+  function renderUncompletedList() {
     if (props.uncompletedItems) {
       const items = props.uncompletedItems.slice();
-      return items.map(item =>
-        <li key={item._id} className="uncompletedItem">
-          {renderItem(item)}
-        </li>
-      );
+      return items.map(item => renderItem(item));
     }
   }
 
   function renderAddField() {
     return (
-      <li key="add-field-key">
-        <AddField
-          onSubmit={newItem => addNewItem(newItem)}
-          isButton={true}
-          editing={false}
-          darkMode={props.darkMode}
-        />
-      </li>
+      <AddField
+        onSubmit={newItem => addNewItem(newItem)}
+        isButton={true}
+        editing={false}
+        darkMode={props.darkMode}
+      />
     );
   }
 
   function renderCompletedList() {
     if (props.completedItems) {
       const items = props.completedItems.slice();
-      return items.map(item =>
-        <li key={item._id} className="completedItem">
-          {renderItem(item)}
-        </li>
-      );
+      return items.map(item => renderItem(item));
     }
   }
 
   return (
-    <ul className='List'>
-      {renderList()}
-      {renderAddField()}
-      {renderCompletedList()}
-    </ul>
+    <div className="task-list">
+      <div>
+        {renderAddField()}
+      </div>
+      <table className="task-table">
+        <tbody>{renderUncompletedList()}</tbody>
+      </table>
+      <div className="complete-divider">
+        Completed Tasks:
+      </div>
+      <table className="task-table">
+        <tbody>{renderCompletedList()}</tbody>
+      </table>
+    </div>
   )
 }
 

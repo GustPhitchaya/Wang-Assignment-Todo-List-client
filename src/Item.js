@@ -15,8 +15,18 @@ function Item(props) {
     setMouseOver(false);
   }
 
+  function handleShowDescClick() {
+    
+  }
+
   function handleEditClick() {
     setEditing(true);
+  }
+
+  function handleDeleteClick() {
+    if (window.confirm('Are you sure to delete "' + props.title + '" ?')) {
+      props.onClickDelete();
+    }
   }
 
   function handleEditSubmit(updatedItem) {
@@ -28,15 +38,18 @@ function Item(props) {
   // ------- render --------
   function renderTask() {
     return (
-      <div>
-        <label htmlFor={props._id}>
-          <input type="checkbox" id={props._id} checked={props.isDone} value={props.title} onChange={props.onCheck} />
-          {props.title}
-        </label>
-        {renderDue()}
-        {renderEditButton()}
-        {renderDeleteButton()}
-      </div>
+      <>
+        <td className="item-title">
+          <label htmlFor={props._id}>
+            <input type="checkbox" id={props._id} checked={props.isDone} value={props.title} onChange={props.onCheck} />
+            {props.title}
+          </label>
+        </td>
+        <td>{renderDue()}</td>
+        <td>{renderShowDescButton()}</td>
+        <td>{renderEditButton()}</td>
+        <td>{renderDeleteButton()}</td>
+      </>
     )
   }
 
@@ -48,6 +61,16 @@ function Item(props) {
 
   function renderDue() {
     return <span className="dueDate"> Due: {new Date(props.due).toDateString()}</span>
+  }
+
+  function renderShowDescButton() {
+    if (mouseOver) {
+      return (
+        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleShowDescClick}>
+          show description
+        </button>
+      )
+    }
   }
 
   function renderEditButton() {
@@ -63,7 +86,7 @@ function Item(props) {
   function renderDeleteButton() {
     if (mouseOver) {
       return (
-        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={props.onClickDelete}>
+        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleDeleteClick}>
           delete
         </button>
       )
@@ -72,23 +95,29 @@ function Item(props) {
 
   if (!editing) {
     return (
-      <div className="item" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+      <tr className="item" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
         {renderTask()}
-        {renderDescription()}
-      </div>
+        {/* <tr>
+          <td>{renderDescription()}</td>
+        </tr> */}
+      </tr>
     );
   } else {
     return (
-      <AddField
-        onSubmit={updatedItem => handleEditSubmit(updatedItem)}
-        isButton={false}
-        _id={props._id}
-        title={props.title}
-        description={props.description}
-        due={new Date(props.due)}
-        isDone={props.isDone}
-        editing={true}
-      />
+      <tr>
+        <td>
+          <AddField
+            onSubmit={updatedItem => handleEditSubmit(updatedItem)}
+            isButton={false}
+            _id={props._id}
+            title={props.title}
+            description={props.description}
+            due={new Date(props.due)}
+            isDone={props.isDone}
+            editing={true}
+          />
+        </td>
+      </tr>
     )
   }
 

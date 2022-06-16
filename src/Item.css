@@ -1,7 +1,3 @@
-.item {
-  margin: 5px;
-}
-
 .button {
   margin-left: 5px;
   width: fit-content;
@@ -18,7 +14,18 @@
   color: #03DAC6;
 }
 
+.item-title {
+  width: 40%;
+}
+
+.item-due {
+  width: 30%;
+}
 
 .dueDate {
   opacity: 0.5;
+}
+
+.confirm {
+  font-size: 1rem;
 }
