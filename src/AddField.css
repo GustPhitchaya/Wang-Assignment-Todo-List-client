@@ -9,16 +9,10 @@
   flex-direction: column;
 }
 
-.button {
-  width: fit-content;
-  border-color: #3700B3;
-  background-color: white;
-  color: #018786;
+.date-picker {
+  color: var(--text-primary); 
 }
 
-.buttonDarkMode {
-  width: fit-content;
-  border-color: #3700B3;
-  background-color: #121212;
-  color: #03DAC6;
+.form {
+  color: var(--text-secondary);
 }

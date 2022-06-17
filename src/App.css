@@ -2,27 +2,21 @@
   text-align: center;
   display: flex;
   flex-direction: column;
-}
-
-/* .App {
-  text-align: center;
-  display: flex;
-  flex-direction: column;
   color: var(--text-primary);
   background-color: var(--background);
   transition: all .5s;
 }
 
-button {
+button, input[type="submit"] {
   color: var(--text-primary);
   background-color: var(--background);
   border: 2px var(--text-primary) solid;
+  font-size: 1.2rem;
   transition: all .5s;
-} */
+}
 
 .App-header {
   font-size: calc(10px + 2vmin);
-  color: #6200EE;
 }
 
 .Todo-list {
@@ -32,27 +26,4 @@ button {
 .List {
   list-style-type: none;
   margin: 5px;
-}
-
-.button {
-  width: fit-content;
-  border-color: #3700B3;
-  background-color: white;
-  color: #018786;
-}
-
-.bodyDarkMode {
-  background-color: #121212;
-  color: #BB86FC;
-}
-
-.buttonDarkMode {
-  width: fit-content;
-  border-color: #3700B3;
-  background-color: #121212;
-  color: #03DAC6;
-}
-
-.AppHeaderDarkMode {
-  color: #BB86FC;
 }

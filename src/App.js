@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import useLocalStorage from 'use-local-storage';
 import List from './List.js';
 
 import './App.css';
@@ -8,12 +9,14 @@ const databaseAPI = 'http://localhost:9000/mongo';
 function App() {
   const [uncompletedItems, setUncompletedItems] = useState(null);
   const [completedItems, setCompletedItems] = useState(null);
-  const [darkMode, setDarkMode] = useState(false);
   const [dummy, setDummy] = useState(false);
 
+  const defaultDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const [theme, setTheme] = useLocalStorage('theme', defaultDark ? 'dark' : 'light');
+
   function handleClick() {
-    setDarkMode(!darkMode);
-    document.body.classList.toggle('bodyDarkMode');
+    const newTheme = (theme === 'light') ? 'dark' : 'light';
+    setTheme(newTheme);
   }
 
   function fetchItems() {
@@ -33,18 +36,18 @@ function App() {
   }, [dummy]);
 
   return (
-    <div className='App' >
+    <div className='App' data-theme={theme}>
       <header className='App-header'>
         <p>To-Do List</p>
-        <button onClick={handleClick} className={darkMode ? "buttonDarkMode" : "button"}>
-          {darkMode ? 'light mode' : 'dark mode'}
+        <button onClick={handleClick}>
+          {(theme === 'dark') ? 'light mode' : 'dark mode'}
         </button>
       </header>
       <div className='Todo-list'>
         <List
           uncompletedItems={uncompletedItems}
           completedItems={completedItems}
-          darkMode={darkMode}
+          theme={theme}
           refresh={() => setDummy(!dummy)}
         />
       </div>

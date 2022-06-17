@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-date-picker';
+
 import './AddField.css';
 
 function AddField(props) {
@@ -72,7 +73,7 @@ function AddField(props) {
 
   function renderTitleForm() {
     return (
-      <label className="title">
+      <label className="form">
         Title:
         {blankspace()}
         <input type="text" name="title" className="titleField" onChange={handleTitleChange} defaultValue={title} autoFocus />
@@ -82,12 +83,13 @@ function AddField(props) {
 
   function renderDatePicker() {
     return (
-      <label>
+      <label className="form">
         Due date:
         {blankspace()}
         <DatePicker
           onChange={handleDueChange}
           value={due}
+          calendarClassName="react-date-picker"
         />
       </label>
     )
@@ -95,7 +97,7 @@ function AddField(props) {
 
   function renderDescriptionForm() {
     return (
-      <label>
+      <label className="form">
         Description:
         {blankspace()}
         <textarea onChange={handleDescriptionChange} defaultValue={description} />
@@ -105,7 +107,7 @@ function AddField(props) {
 
   if (isButton) {
     return (
-      <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleClick}>
+      <button onClick={handleClick}>
         Add
       </button>
     );
@@ -115,7 +117,7 @@ function AddField(props) {
         {renderTitleForm()}
         {renderDatePicker()}
         {renderDescriptionForm()}
-        <input type="submit" value="Submit" className={props.darkMode ? "buttonDarkMode" : "button"} />
+        <input type="submit" value="Submit" />
       </form>
     )
   }

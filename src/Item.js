@@ -5,6 +5,7 @@ import AddField from "./AddField";
 function Item(props) {
   const [mouseOver, setMouseOver] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [showDescription, setShowDescription] = useState(false);
 
   // -------- handle ---------
   function handleMouseOver() {
@@ -16,7 +17,7 @@ function Item(props) {
   }
 
   function handleShowDescClick() {
-    
+    setShowDescription(!showDescription);
   }
 
   function handleEditClick() {
@@ -24,9 +25,14 @@ function Item(props) {
   }
 
   function handleDeleteClick() {
-    if (window.confirm('Are you sure to delete "' + props.title + '" ?')) {
+    if (!props.isDone) {
+      if (window.confirm('Are you sure to delete "' + props.title + '" ?')) {
+        props.onClickDelete();
+      }
+    } else {
       props.onClickDelete();
     }
+
   }
 
   function handleEditSubmit(updatedItem) {
@@ -45,18 +51,14 @@ function Item(props) {
             {props.title}
           </label>
         </td>
-        <td>{renderDue()}</td>
-        <td>{renderShowDescButton()}</td>
-        <td>{renderEditButton()}</td>
-        <td>{renderDeleteButton()}</td>
+        <td className="item-due">{renderDue()}</td>
+        <td className="button-cell">
+          {renderShowDescButton()}
+          {renderEditButton()}
+          {renderDeleteButton()}
+        </td>
       </>
     )
-  }
-
-  function renderDescription() {
-    if (mouseOver) {
-      return <div>Description: {props.description}</div>
-    }
   }
 
   function renderDue() {
@@ -66,8 +68,8 @@ function Item(props) {
   function renderShowDescButton() {
     if (mouseOver) {
       return (
-        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleShowDescClick}>
-          show description
+        <button className="button" onClick={handleShowDescClick}>
+          {(showDescription) ? 'hide description' : 'show description'}
         </button>
       )
     }
@@ -76,7 +78,7 @@ function Item(props) {
   function renderEditButton() {
     if (mouseOver) {
       return (
-        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleEditClick}>
+        <button className="button" onClick={handleEditClick}>
           edit
         </button>
       )
@@ -86,21 +88,29 @@ function Item(props) {
   function renderDeleteButton() {
     if (mouseOver) {
       return (
-        <button className={props.darkMode ? "buttonDarkMode" : "button"} onClick={handleDeleteClick}>
+        <button className="button" onClick={handleDeleteClick}>
           delete
         </button>
       )
     }
   }
 
+  function renderDescription() {
+    if (showDescription) {
+      return <>Description: {props.description}</>
+    }
+  }
+
   if (!editing) {
     return (
-      <tr className="item" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
-        {renderTask()}
-        {/* <tr>
-          <td>{renderDescription()}</td>
-        </tr> */}
-      </tr>
+      <>
+        <tr className="item" onMouseOver={handleMouseOver} onMouseLeave={handleMouseLeave}>
+          {renderTask()}
+        </tr>
+        <div>
+          {renderDescription()}
+        </div>
+      </>
     );
   } else {
     return (

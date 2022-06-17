@@ -1,12 +1,11 @@
 .complete-divider {
-  color: #6200EE;
   width: 100%;
   margin-top: 20px;
 }
 
 .task-list {
   max-width: 100%;
-  margin-left: 20px;
+  margin: 15px 30px;
 }
 
 .task-table {
@@ -14,6 +13,6 @@
 }
 
 .item {
-  height:  1.5em;
+  height: 1.5em;
 }
 
